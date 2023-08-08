@@ -3,7 +3,6 @@ import getConfig from "next/config";
 import React, { FC } from "react";
 import Router from "next/router";
 import useMedia from "use-media";
-import Image from "next/image";
 
 import { DISALLOW_REGISTRATION } from "../consts";
 import { useStoreState } from "../store";
@@ -107,50 +106,15 @@ const Header: FC = () => {
             forButton
             isNextLink
           >
-            <Image
-              src="/images/logo.svg"
+            <img
+              src="/images/logo.png"
               alt="kutt logo"
-              width={18}
-              height={24}
+              width={64}
+              height={64}
             />
             {publicRuntimeConfig.SITE_NAME}
           </ALink>
         </LogoImage>
-
-        {!isMobile && (
-          <Flex
-            style={{ listStyle: "none" }}
-            display={["none", "flex"]}
-            alignItems="flex-end"
-            as="ul"
-            m={0}
-            px={0}
-            pt={0}
-            pb="2px"
-          >
-            <Li>
-              <ALink
-                href="//github.com/thedevs-network/kutt"
-                target="_blank"
-                rel="noopener noreferrer"
-                title="GitHub"
-                fontSize={[14, 16]}
-              >
-                GitHub
-              </ALink>
-            </Li>
-            <Li>
-              <ALink
-                href="/report"
-                title="Report abuse"
-                fontSize={[14, 16]}
-                isNextLink
-              >
-                Report
-              </ALink>
-            </Li>
-          </Flex>
-        )}
       </Flex>
       <RowCenterV
         m={0}
