@@ -306,6 +306,7 @@ export const redirect = (app: ReturnType<typeof next>): Handler => async (
       headers: req.headers,
       realIP: req.realIP,
       referrer: req.get("Referrer"),
+      custom_referrer: req.query.custom_referrer ?? req.query.link,
       link
     });
   }

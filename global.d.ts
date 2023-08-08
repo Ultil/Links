@@ -114,6 +114,7 @@ interface Visit {
   created_at: string;
   link_id: number;
   referrers: Record<string, number>;
+  custom_referrers: Record<string, number>;
   total: number;
   br_chrome: number;
   br_edge: number;

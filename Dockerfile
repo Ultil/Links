@@ -15,6 +15,9 @@ COPY . .
 # Give permission to run script
 RUN chmod +x ./wait-for-it.sh
 
+# Change read right
+RUN sed -i -e 's/\r$//' ./wait-for-it.sh
+
 # Build files
 RUN npm run build
 

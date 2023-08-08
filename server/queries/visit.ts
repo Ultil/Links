@@ -11,13 +11,15 @@ interface Add {
   id: number;
   os: string;
   referrer: string;
+  custom_referrer?: string;
 }
 
 export const add = async (params: Add) => {
   const data = {
     ...params,
     country: params.country.toLowerCase(),
-    referrer: params.referrer.toLowerCase()
+    referrer: params.referrer.toLowerCase(),
+    custom_referrer: params.custom_referrer?.toLowerCase()
   };
 
   const visit = await knex<Visit>("visits")
@@ -44,6 +46,10 @@ export const add = async (params: Add) => {
         referrers: knex.raw(
           "jsonb_set(referrers, '{??}', (COALESCE(referrers->>?,'0')::int + 1)::text::jsonb)",
           [data.referrer, data.referrer]
+        ),
+        custom_referrers: knex.raw(
+          "jsonb_set(custom_referrers, '{??}', (COALESCE(custom_referrers->>?,'0')::int + 1)::text::jsonb)",
+          [data.custom_referrer, data.custom_referrer]
         )
       });
   } else {
@@ -51,6 +57,7 @@ export const add = async (params: Add) => {
       [`br_${data.browser}`]: 1,
       countries: { [data.country]: 1 },
       referrers: { [data.referrer]: 1 },
+      custom_referrers: { [data.custom_referrer]: 1 },
       [`os_${data.os}`]: 1,
       total: 1,
       link_id: data.id

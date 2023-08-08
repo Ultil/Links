@@ -18,6 +18,7 @@ export async function createVisitTable(knex: Knex) {
         .notNullable()
         .onDelete("CASCADE");
       table.jsonb("referrers").defaultTo("{}");
+      table.jsonb("custom_referrers").defaultTo("{}");
       table
         .integer("total")
         .notNullable()
