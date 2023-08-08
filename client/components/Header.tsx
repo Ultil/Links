@@ -89,7 +89,7 @@ const Header: FC = () => {
       mb={[32, 0]}
       height={["auto", "auto", 102]}
       justifyContent="space-between"
-      alignItems={["flex-start", "center"]}
+      alignItems="center"
     >
       <Flex
         flexDirection={["column", "row"]}
@@ -105,14 +105,12 @@ const Header: FC = () => {
             }}
             forButton
             isNextLink
+            style={{
+              fontSize: "1.25rem",
+              fontWeight: "bold"
+            }}
           >
-            <img
-              src="/images/logo.png"
-              alt="kutt logo"
-              width={64}
-              height={64}
-            />
-            {publicRuntimeConfig.SITE_NAME}
+            Mabel Insights
           </ALink>
         </LogoImage>
       </Flex>
@@ -123,20 +121,6 @@ const Header: FC = () => {
         as="ul"
         style={{ listStyle: "none" }}
       >
-        {isMobile && (
-          <Li>
-            <Flex>
-              <ALink
-                href="/report"
-                title="Report"
-                fontSize={[14, 16]}
-                isNextLink
-              >
-                Report
-              </ALink>
-            </Flex>
-          </Li>
-        )}
         {logout}
         {settings}
         {login}
