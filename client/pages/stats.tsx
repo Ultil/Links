@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import formatDate from "date-fns/format";
 import { NextPage } from "next";
 import axios from "axios";
+import * as XLSX from "xlsx";
 
 import Text, { H1, H2, H4, Span } from "../components/Text";
 import { getAxiosConfig, removeProtocol } from "../utils";
@@ -16,6 +17,33 @@ import { APIv2, Colors } from "../consts";
 import { useStoreState } from "../store";
 import ALink from "../components/ALink";
 import Icon from "../components/Icon";
+import styled from "styled-components";
+
+const Table = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+`;
+
+const Th = styled.th`
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+  position: sticky;
+  top: 0;
+  background-color: #2979ff;
+  color: white;
+`;
+
+const Td = styled.td`
+  border: 1px solid #ccc;
+  padding: 8px;
+`;
+
+const ScrollableTableContainer = styled.div`
+  max-height: 800px;
+  overflow-y: auto;
+`;
 
 interface Props {
   id?: string;
@@ -29,6 +57,24 @@ const StatsPage: NextPage<Props> = ({ id }) => {
   const [period, setPeriod] = useState("lastDay");
 
   const stats = data && data[period];
+  const handleDownload = () => {
+    const worksheet = XLSX.utils.json_to_sheet(stats.stats.custom_referrer);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "TableData");
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array"
+    });
+    const blob = new Blob([excelBuffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `custom_referrer_${id}.xlsx`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
 
   useEffect(() => {
     if (!id || !isAuthenticated) return;
@@ -176,6 +222,37 @@ const StatsPage: NextPage<Props> = ({ id }) => {
                           OS.
                         </H2>
                         <Bar data={stats.stats.os} />
+                      </Col>
+                    </Flex>
+                    <Divider my={4} />
+                    <Flex width={1}>
+                      <Col flex="1 1 0">
+                        <Flex
+                          mb={3}
+                          justifyContent="space-between"
+                          alignItems="center"
+                        >
+                          <H2 light>Custom Referrals.</H2>
+                          <Button onClick={handleDownload}>Save</Button>
+                        </Flex>
+                        <ScrollableTableContainer>
+                          <Table>
+                            <thead>
+                              <tr>
+                                <Th>Referrer</Th>
+                                <Th>Count</Th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {stats.stats.custom_referrer.map((t, _index) => (
+                                <tr key={`entry_${_index}`}>
+                                  <Td>{t.name}</Td>
+                                  <Td>{t.value}</Td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </Table>
+                        </ScrollableTableContainer>
                       </Col>
                     </Flex>
                   </>

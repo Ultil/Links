@@ -1,4 +1,6 @@
 .env
 .git
+.next
+*.tar
 node_modules
 production-server

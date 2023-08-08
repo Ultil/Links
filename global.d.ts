@@ -142,6 +142,7 @@ interface Stats {
   >;
   country: Record<string, number>;
   referrer: Record<string, number>;
+  custom_referrer: Record<string, number>;
 }
 
 declare namespace Express {

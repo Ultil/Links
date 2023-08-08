@@ -91,7 +91,8 @@ export const statsObjectToArray = (obj: Stats) => {
     browser: objToArr("browser"),
     os: objToArr("os"),
     country: objToArr("country"),
-    referrer: objToArr("referrer")
+    referrer: objToArr("referrer"),
+    custom_referrer: objToArr("custom_referrer")
   };
 };
 
@@ -141,7 +142,8 @@ export const getInitStats = (): Stats => {
       windows: 0
     },
     country: {},
-    referrer: {}
+    referrer: {},
+    custom_referrer: {},
   });
 };
 

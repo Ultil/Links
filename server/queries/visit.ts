@@ -73,6 +73,7 @@ interface StatsResult {
     os: { name: string; value: number }[];
     country: { name: string; value: number }[];
     referrer: { name: string; value: number }[];
+    custom_referrer: { name: string; value: number }[];
   };
   views: number[];
 }
@@ -164,6 +165,16 @@ export const find = async (match: Partial<Visit>, total: number) => {
               }),
               {}
             )
+          },
+          custom_referrer: {
+            ...period.custom_referrer,
+            ...Object.entries(visit.custom_referrers).reduce(
+              (obj, [custom_referrer, count]) => ({
+                ...obj,
+                [custom_referrer]: (period.custom_referrer[custom_referrer] || 0) + count
+              }),
+              {}
+            )
           }
         };
         stats[type].views[index] = view + visit.total;
@@ -212,6 +223,16 @@ export const find = async (match: Partial<Visit>, total: number) => {
           (obj, [referrer, count]) => ({
             ...obj,
             [referrer]: (allTime.referrer[referrer] || 0) + count
+          }),
+          {}
+        )
+      },
+      custom_referrer: {
+        ...allTime.custom_referrer,
+        ...Object.entries(visit.custom_referrers).reduce(
+          (obj, [custom_referrer, count]) => ({
+            ...obj,
+            [custom_referrer]: (allTime.custom_referrer[custom_referrer] || 0) + count
           }),
           {}
         )
