@@ -89,6 +89,22 @@ class AppDocument extends Document<Props> {
             async
             defer
           />
+
+          <script
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=YOUR_TRACKING_ID`}
+          />
+          
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-62T5LCCWXL');
+              `,
+            }}
+          />
         </Head>
         <body
           style={{
